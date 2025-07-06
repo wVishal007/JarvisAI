@@ -10,6 +10,7 @@ import AITechnology from "./pages/AITechnology";
 import { SpeechProvider } from "./contexts/SpeechContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import LoginSuccess from "./pages/LoginSuccess";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
