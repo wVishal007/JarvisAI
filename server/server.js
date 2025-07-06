@@ -22,7 +22,7 @@ connectDB();
 const client = new Mistral({ apiKey: process.env.MIST_API_KEY });
 
 const allowedOrigins = [
-  ' https://jarvisai-oktt.onrender.com/'
+  'https://jarvisai-oktt.onrender.com/'
 ];
 
 app.use(cors({

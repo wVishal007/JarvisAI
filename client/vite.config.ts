@@ -10,7 +10,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: ' https://jarvisai-oktt.onrender.com/',
+        target: 'https://jarvisai-oktt.onrender.com/',
         changeOrigin: true,
       },
     },
