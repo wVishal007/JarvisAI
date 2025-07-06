@@ -30,6 +30,7 @@ function App() {
               <Route path="/ai-technology" element={<AITechnology />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/success" element={<LoginSuccess />} />
             </Routes>
           </main>
 

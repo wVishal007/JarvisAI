@@ -11,20 +11,19 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  const res: AuthResponse = await login(email, password);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res: AuthResponse = await login(email, password);
 
-  if (res.success && res.token) {
-    localStorage.setItem("token", res.token);
-    dispatch(setUser(res.userDetails));
-    // dispatch(setMessages(res.chatlog || [])); // Add this line if you want to set chat history
-    navigate("/chat");
-  } else {
-    alert(res.message || "Login failed");
-  }
-};
-
+    if (res.success && res.token) {
+      localStorage.setItem("token", res.token);
+      dispatch(setUser(res.userDetails));
+      // dispatch(setMessages(res.chatlog || [])); // Add this line if you want to set chat history
+      navigate("/success");
+    } else {
+      alert(res.message || "Login failed");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
@@ -61,6 +60,12 @@ const handleLogin = async (e: React.FormEvent) => {
           No account?{" "}
           <a href="/signup" className="text-blue-400">
             Sign up
+          </a>
+          or // Somewhere in login component
+          <a href="https://jarvisai-oktt.onrender.com/api/v1/user/google">
+            <button className="bg-red-500 text-white px-4 py-2 rounded">
+              Login with Google
+            </button>
           </a>
         </p>
       </form>

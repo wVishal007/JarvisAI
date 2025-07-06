@@ -5,6 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import { Mistral } from '@mistralai/mistralai';
+import session from 'express-session';
+import passport from 'passport';
+import './utils/passport.js'
 
 import connectDB from './utils/connectDB.js';
 import userRoutes from './routes/user.route.js';
@@ -101,6 +104,16 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'your_secret',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ✅ API Routes
 app.use('/api/v1/user', userRoutes);
