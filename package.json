@@ -2,12 +2,13 @@
   "name": "jarvis-backend",
   "version": "1.0.0",
   "description": "JARVIS AI Assistant Backend Server",
-  "main": "server.js",
+  "main": "server/server.js",
   "type": "module",
   "scripts": {
     "start": "node server/server.js",
-    "build":"npm install && npm install --legacy-peer-deps --prefix client && npm run build --prefix client",
-    "dev": "server/server.js"
+    "dev": "nodemon server/server.js",
+    "build": "npm install && npm install --legacy-peer-deps --prefix client && npm run build --prefix client",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@mistralai/mistralai": "^1.6.0",
@@ -24,9 +25,8 @@
     "ai",
     "chatbot",
     "jarvis",
-    "express",
-    "mistral"
+    "express"
   ],
-  "author": "JARVIS Team",
+  "author": "Vishal Singh",
   "license": "MIT"
 }

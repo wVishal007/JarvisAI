@@ -17,12 +17,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// ✅ Connect MongoDB
 connectDB();
 
+// ✅ Mistral client
 const client = new Mistral({ apiKey: process.env.MIST_API_KEY });
 
+// ✅ CORS whitelist
 const allowedOrigins = [
-  'https://jarvisai-oktt.onrender.com/'
+  'http://localhost:5173',
+  'https://jarvisai-oktt.onrender.com',
 ];
 
 app.use(cors({
@@ -31,21 +35,23 @@ app.use(cors({
     if (allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error('CORS policy violation: Origin not allowed'));
   },
-  credentials: true
+  credentials: true,
 }));
 
 app.use(express.json());
 
+// ✅ Serve frontend from client/dist
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
+// ✅ Health Check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Jarvis backend is running' });
 });
 
+// ✅ Chat API
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, conversationHistory = [] } = req.body;
-
     let userId = null;
 
     const authHeader = req.headers.authorization;
@@ -66,14 +72,14 @@ app.post('/api/chat', async (req, res) => {
     const messages = [
       { role: 'system', content: "You are JARVIS, an advanced AI assistant inspired by Tony Stark." },
       ...conversationHistory,
-      { role: 'user', content: message }
+      { role: 'user', content: message },
     ];
 
     const chatResponse = await client.chat.complete({
       model: 'mistral-small',
       messages,
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 1000,
     });
 
     const reply = chatResponse.choices[0]?.message?.content;
@@ -87,7 +93,7 @@ app.post('/api/chat', async (req, res) => {
     res.json({
       success: true,
       response: reply,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
   } catch (error) {
@@ -96,13 +102,16 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+// ✅ API Routes
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/chat', chatRoutes);
 
+// ✅ Frontend Fallback Route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
+// ✅ Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Jarvis backend running on port ${PORT}`);
 });
